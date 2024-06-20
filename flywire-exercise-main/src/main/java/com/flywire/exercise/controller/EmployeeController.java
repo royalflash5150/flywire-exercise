@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,12 @@ public class EmployeeController {
     @RequestMapping(value = "/list/active", method = { RequestMethod.GET })
     public ResponseEntity<List<Employee>> getActiveList()
     {
-       return null;
+        try {
+            return ResponseEntity.of(java.util.Optional.ofNullable(iEmployeeService.getActiveList()));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/list/{id}")
