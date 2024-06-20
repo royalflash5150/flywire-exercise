@@ -44,14 +44,18 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     public List<Employee> getListHiredWithinRange(Date startDate, Date endDate) throws IOException {
-        return null;
+        List<Employee> employeeList = new ArrayList<>(DataBaseUtil.fetchEmployees());
+        return employeeList.stream()
+                .filter(e -> !e.getDateHired().before(startDate) && !e.getDateHired().after(endDate))
+                .sorted(Comparator.comparing(Employee::getDateHired).reversed())
+                .collect(Collectors.toList());
     }
 
     public Employee create(Employee employeeItem) throws IOException {
-        return null;
+        return DataBaseUtil.create(employeeItem);
     }
 
     public Employee deactivate(String id) throws IOException {
-        return null;
+        return DataBaseUtil.deactivate(id);
     }
 }

@@ -33,6 +33,19 @@ public  class DataBaseUtil {
         return employeeItem;
     }
     public static Employee deactivate(String id) throws IOException {
-        return null;
+        List<Employee> employeeList = new ArrayList<>(DataBaseUtil.fetchEmployees());
+        Employee employeeItem = employeeList.stream()
+                .filter(e -> e.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+        if (employeeItem != null) {
+            employeeItem.setActive(false);
+            ObjectMapper objectMapper = new ObjectMapper();
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            objectMapper.setDateFormat(df);
+            File file = new ClassPathResource("json/data.json").getFile();
+            objectMapper.writeValue(file, employeeList);
+        }
+        return employeeItem;
     }
 }

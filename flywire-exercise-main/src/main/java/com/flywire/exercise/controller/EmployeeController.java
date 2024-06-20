@@ -24,8 +24,7 @@ public class EmployeeController {
     IEmployeeService iEmployeeService;
 
     @RequestMapping(value = "/list/active", method = { RequestMethod.GET })
-    public ResponseEntity<List<Employee>> getActiveList()
-    {
+    public ResponseEntity<List<Employee>> getActiveList() {
         try {
             return ResponseEntity.of(java.util.Optional.ofNullable(iEmployeeService.getActiveList()));
         } catch (Exception e) {
@@ -49,16 +48,35 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> getListHiredWithinRange(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
-        return null;
+        try {
+            return ResponseEntity.of(java.util.Optional.ofNullable(iEmployeeService.getListHiredWithinRange(startDate, endDate)));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/create")
     public ResponseEntity<Employee> create(@RequestBody Employee employeeItem) {
-        return null;
+        try {
+            return ResponseEntity.ok(iEmployeeService.create(employeeItem));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/deactivate/{id}")
     public ResponseEntity<Employee> deactivate(@PathVariable String id) {
-        return null;
+        try {
+            Employee employeeItem = iEmployeeService.deactivate(id);
+            if(employeeItem != null) {
+                return ResponseEntity.ok(employeeItem);
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
