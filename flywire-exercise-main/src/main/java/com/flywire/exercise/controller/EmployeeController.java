@@ -36,7 +36,13 @@ public class EmployeeController {
 
     @GetMapping("/list/{id}")
     public ResponseEntity<Map<String, Object>> getListByIdWithDirectReports(@PathVariable String id) {
-        return null;
+        try {
+            Map<String, Object> result = iEmployeeService.getListByIdWithDirectReports(id);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/list/hired")

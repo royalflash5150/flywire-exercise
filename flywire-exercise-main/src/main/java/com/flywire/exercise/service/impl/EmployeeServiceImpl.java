@@ -19,7 +19,28 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     public Map<String, Object> getListByIdWithDirectReports(String id) throws IOException {
-        return null;
+        List<Employee> employeeList = new ArrayList<>(DataBaseUtil.fetchEmployees());
+        Employee employeeItem = employeeList.stream()
+                .filter(e -> e.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (employeeItem == null) {
+            return null;
+        }
+        List<String> directReportIds = employeeItem.getDirectReports();
+        List<String> directReportNames = employeeList.stream()
+                .filter(e -> directReportIds.contains(e.getId()))
+                .map(Employee::getName)
+                .collect(Collectors.toList());
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", employeeItem.getId());
+        response.put("name", employeeItem.getName());
+        response.put("position", employeeItem.getPosition());
+        response.put("directReports", directReportNames);
+        response.put("active", employeeItem.isActive());
+        response.put("hireDate", employeeItem.getDateHired());
+        return response;
     }
 
     public List<Employee> getListHiredWithinRange(Date startDate, Date endDate) throws IOException {

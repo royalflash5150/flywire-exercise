@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flywire.exercise.model.Employee;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -22,7 +23,14 @@ public  class DataBaseUtil {
     }
 
     public static Employee create(Employee employeeItem) throws IOException{
-        return null;
+        List<Employee> employeeList = new ArrayList<>(DataBaseUtil.fetchEmployees());
+        employeeList.add(employeeItem);
+        ObjectMapper objectMapper = new ObjectMapper();
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        objectMapper.setDateFormat(df);
+        File file = new ClassPathResource("json/data.json").getFile();
+        objectMapper.writeValue(file, employeeList);
+        return employeeItem;
     }
     public static Employee deactivate(String id) throws IOException {
         return null;
