@@ -14,8 +14,6 @@ function App() {
   const [deactivateId, setDeactivateId] = useState('');
   const [ret, setRet] = useState({});
   const [msg, setMsg] = useState('');
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     fetchActiveEmployees();
@@ -98,7 +96,7 @@ function App() {
       alert("Input position.");
       return false;
     }
-    newEmployee?.directReports?.map((item, key) => {
+    newEmployee?.directReports?.map((item) => {
       if (!isNumber(item)) {
         flag = false;
       }
@@ -271,7 +269,7 @@ function App() {
                             <p>Position: {ret.position}</p>
                             <p>Status: {ret.active ? "Active" : "InActive"}</p>
                             <p>directReports: {ret.directReports?.map((item, index) => (
-                              <span>{item} {index == ret.directReports.length - 1 ? "" : ", "}</span>
+                              <span>{item} {index === ret.directReports.length - 1 ? "" : ", "}</span>
                             ))}</p>
 
                           </>
