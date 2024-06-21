@@ -1,0 +1,1 @@
+export const HTTP_REQUEST_BASIC_URL = 'http://localhost:8080/';

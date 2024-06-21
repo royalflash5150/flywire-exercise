@@ -36,6 +36,9 @@ public class EmployeeController {
 
     @GetMapping("/list/{id}")
     public ResponseEntity<Map<String, Object>> getListByIdWithDirectReports(@PathVariable String id) {
+        if(id == null){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         try {
             Map<String, Object> result = iEmployeeService.getListByIdWithDirectReports(id);
             return ResponseEntity.ok(result);
@@ -49,6 +52,9 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> getListHiredWithinRange(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
+        if(startDate == null || endDate == null ) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         try {
             return ResponseEntity.of(java.util.Optional.ofNullable(iEmployeeService.getListHiredWithinRange(startDate, endDate)));
         } catch (Exception e) {
@@ -59,6 +65,9 @@ public class EmployeeController {
 
     @PostMapping("/create")
     public ResponseEntity<Employee> create(@RequestBody Employee employeeItem) {
+        if(employeeItem == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         try {
             return ResponseEntity.ok(iEmployeeService.create(employeeItem));
         } catch (Exception e) {
@@ -69,6 +78,9 @@ public class EmployeeController {
 
     @PutMapping("/deactivate/{id}")
     public ResponseEntity<Employee> deactivate(@PathVariable String id) {
+        if(id == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         try {
             Employee employeeItem = iEmployeeService.deactivate(id);
             if(employeeItem != null) {
