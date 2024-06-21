@@ -17,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/employee")
+@CrossOrigin
 public class EmployeeController {
     private static final Logger log = LoggerFactory.getLogger(HelloWorldController.class);
 
